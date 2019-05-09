@@ -26,12 +26,14 @@ Note that consumer adaptation mechanisms used to dynamically select the appropri
 
 ### How to run the demo
 
-**Prerequisites**: You should have an account and a reserved slice on R2lab and have installed a few software on your machine. 
+**Prerequisites**: 
 
-* To sign up and reserve a slice, see [https://r2lab.inria.fr/tuto-010-registration.md]()   
-* To install the few companion software, see [https://r2lab.inria.fr/tuto-030-nepi-ng-install.md]()
+You should have an account and a reserved slice on R2lab and have installed a few software on your machine. 
 
-**Publisher host**: Choose the host you want to use as the publisher of the video file. We provide a Dockerfile (within the publisher directory) with Cefore and iperf installed that you can use for the demo. To build the corresponding image, run on an empty directory of the publisher host the following command:
+* To sign up and reserve a slice, click [here](https://r2lab.inria.fr/tuto-010-registration.md).   
+* To install the few companion software, click [here](https://r2lab.inria.fr/tuto-030-nepi-ng-install.md). 
+
+You need to run the publisher on some host of your choice. We provide a Dockerfile (within the publisher directory) that is ready to use for the demo with Cefore and iperf binaries installed. To build the corresponding docker image, run on an empty directory of the publisher host the following command:
 
 * docker build -t cefore_publisher .
 
@@ -39,13 +41,13 @@ Then to create the publisher container, run:
 
 * docker run  -t -i -p80:80  --rm --name="cefore\_publisher" cefore\_publisher:latest
 
-#### Cefore streaming scenario 
+##### Running the Cefore streaming scenario: 
 
 We assume that your publisher host has the following public IP address: a.b.c.d
 
 Run on your machine:
 
-*  ./mosaic-cefore.py -P a.b.c.d -l
+*  ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
 
 Then, wait for a few minutes, and when the script invites you to do so:
 
@@ -59,17 +61,18 @@ Run on the publisher container:
 
 
 
-#### Classical CCN (Cefore-based) streaming scenario 
+##### Running the Classical CCN (Cefore-based) streaming scenario: 
 
 We assume that your publisher host has the following public IP address: a.b.c.d
 
 Run on your machine:
 
-*  ./mosaic-cefore.py -P a.b.c.d -l
+*  ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
 
 Then, wait for a few minutes, and when the script invites you to do so:
 
 Run on the ns-3 R2lab node (fit32 by default):
+
 * /root/NS3/source/ns-3-dce/waf  --run dce-cefore-test
 
 Run on the publisher container:
@@ -79,11 +82,11 @@ Run on the publisher container:
 
 
 
-#### TCP streaming scenario
+##### Running the TCP streaming scenario:
 
 Run on your machine:
 
- * ./mosaic-cefore.py -t -P a.b.c.d -l
+ * ./mosaic-cefore.py -t -P a.b.c.d -s your_slice -l
  
 Then, wait for a few minutes, and when the script invites you to do so:
 
