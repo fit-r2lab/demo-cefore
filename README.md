@@ -1,7 +1,6 @@
 # demo-cefore
 
-this git repo hosts the artefacts for the paper submitted at xxx 
+this git repo hosts the artefacts for the paper "Efficient Pull-based Mobile Video Streaming
+leveraging In-Network Functions" submitted at Globecom'19 conference 
 
-title:
-
-authors:
+authors: Kazuhisa Matsuzono, Hitoshi Asaeda, Indukala Naladala and Thierry Turletti
