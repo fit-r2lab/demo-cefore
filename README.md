@@ -1,18 +1,18 @@
 # demo-cefore
 
-this git repo hosts the artefacts for a research paper
+This git repo hosts the artefacts for the following research paper:
 
-### title
+#### title:
 
 "*Efficient Pull-based Mobile Video Streaming leveraging In-Network Functions*"
 
-### authors
+#### authors:
 
 Kazuhisa Matsuzono, Hitoshi Asaeda, Indukala Naladala and Thierry Turletti
 
-### venue
+#### venue:
 
-submitted at Globecom'19 conference # demo-cefore
+submitted at Globecom'19 conference 
 
 
 
@@ -26,14 +26,20 @@ Note that consumer adaptation mechanisms used to dynamically select the appropri
 
 ### How to run the demo
 
-**Prerequisites**: you should have an account and a reserved slice on R2lab and have installed a few software on your machine. 
+**Prerequisites**: You should have an account and a reserved slice on R2lab and have installed a few software on your machine. 
 
 * To sign up and reserve a slice, see [https://r2lab.inria.fr/tuto-010-registration.md]()   
 * To install the few companion software, see [https://r2lab.inria.fr/tuto-030-nepi-ng-install.md]()
 
+**Publisher host**: Choose the host you want to use as the publisher of the video file. We provide a Dockerfile (within the publisher directory) with Cefore and iperf installed that you can use for the demo. To build the corresponding image, run on an empty directory of the publisher host the following command:
 
+* docker build -t cefore_publisher .
 
-### Cefore streaming scenario 
+Then to create the publisher container, run:
+
+* docker run  -t -i -p80:80  --rm --name="cefore\_publisher" cefore\_publisher:latest
+
+#### Cefore streaming scenario 
 
 We assume that your publisher host has the following public IP address: a.b.c.d
 
@@ -41,14 +47,19 @@ Run on your machine:
 
 *  ./mosaic-cefore.py -P a.b.c.d -l
 
-Then, after about 5mn, when the script invites you to do so, run on the publisher host:
+Then, wait for a few minutes, and when the script invites you to do so, run on the publisher container:
 
-* 
+* cefnetdstart
+* cefputfile ccn:/streaming/test -f ./publisher/sample.mp4 -r 1
 
 
 
-### TCP streaming scenario
+#### TCP streaming scenario
 
-* Run on your machine:
+Run on your machine:
 
- ./mosaic-cefore.py -t -P a.b.c.d -l
+ * ./mosaic-cefore.py -t -P a.b.c.d -l
+ 
+Then, wait for a few minutes, and when the script invites you to do so, run on the publisher container:
+
+* iperf -s -P 1 -p 80

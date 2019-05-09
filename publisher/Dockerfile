@@ -29,10 +29,8 @@ RUN true \
   && mkdir -p /usr/local/cefore \
   && cp Cefore-Config/* /usr/local/cefore \
   && echo "CS_MODE=1" > /usr/local/cefore/cefnetd.conf \
-  && echo "ccn:/streaming udp 172.16.0.1" > /usr/local/cefore/cefnetd.fib \
-  && pkill cefnetd || true \
-  && cefnetdstart \
-  && echo "Ready to run: cefputfile ccn:/streaming/test -f video/sample.mp4 -r 1"
+  && echo "ccn:/streaming udp 172.16.0.1" > /usr/local/cefore/cefnetd.fib 
+
 
 EXPOSE 80
 
