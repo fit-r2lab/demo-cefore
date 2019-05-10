@@ -31,15 +31,17 @@ Note that consumer adaptation mechanisms used to dynamically select the appropri
 You should have an account and a reserved slice on R2lab and have installed a few software on your machine. 
 
 * To sign up and reserve a slice, click [here](https://r2lab.inria.fr/tuto-010-registration.md).   
-* To install the few companion software, click [here](https://r2lab.inria.fr/tuto-030-nepi-ng-install.md). 
+* To install the R2lab companion software, click [here](https://r2lab.inria.fr/tuto-030-nepi-ng-install.md). 
 
-You need to run the publisher on some host of your choice. We provide a Dockerfile (within the publisher directory) that is ready to use for the demo with Cefore and iperf binaries installed. To build the corresponding docker image, run on an empty directory of the publisher host the following command:
+You need to run the publisher on a host of your choice. We provide a Dockerfile (within the publisher directory) that is ready to use for the demo including Cefore and iperf binaries. The docker host is assumed to have docker already installed. To build the corresponding docker image, run on an empty directory of the publisher host the following command:
 
 * docker build -t cefore_publisher .
 
 Then to create the publisher container, run:
 
 * docker run  -t -i -p80:80  --rm --name="cefore\_publisher" cefore\_publisher:latest
+
+This will create a running container on your host in which you will run a few commands (see below).
 
 ##### Running the Cefore streaming scenario: 
 
@@ -106,5 +108,17 @@ Then, run on the publisher container:
 * iperf -s -P 1 -p 80
 
 #### How to generate the figures
+
+##### To plot the throughput (Figure 1):
+TBD
+
+##### To plot the buffer level (Figure 2):
+TBD
+
+##### To plot the Normalized QoE (Figure 3):
+
+We provide a program to compute the QoE metric on the directory QoE. To compute it, just run:
+
+* g++ cal-buffer-qoe.cc
 
 TBD
