@@ -52,9 +52,12 @@ Run on your machine:
 Then, wait for a few minutes, and when the script invites you to do so:
 
 Run on the ns-3 R2lab node (fit32 by default):
+
 * /root/NS3/source/ns-3-dce/waf  --run dce-cefore-test
 
-Run on the publisher container:
+Note that the log file will be at /root/NS3/source/ns-3-dce/files-3/tmp/cefgetstream-thuputLog-1262304001100000
+
+Then, run on the publisher container:
 
 * cefnetdstart
 * cefputfile ccn:/streaming/test -f ./publisher/sample.mp4 -r 1
@@ -75,7 +78,9 @@ Run on the ns-3 R2lab node (fit32 by default):
 
 * /root/NS3/source/ns-3-dce/waf  --run dce-cefore-test
 
-Run on the publisher container:
+Note that the log file will be at /root/NS3/source/ns-3-dce/files-3/tmp/cefgetstream-thuputLog-1262304001100000
+
+Then, run on the publisher container:
 
 * cefnetdstart
 * cefputfile ccn:/streaming/test -f ./publisher/sample.mp4 -r 1
@@ -94,6 +99,12 @@ Run on the ns-3 R2lab node (fit32 by default):
 
 * /root/NS3/source/ns-3-dce/waf  --run dce-tcp-test
 
-Run on the publisher container:
+Note that the log file will be at /root/NS3/source/ns-3-dce/files-4/var/log/56884/stdout
+
+Then, run on the publisher container:
 
 * iperf -s -P 1 -p 80
+
+#### How to generate the figures
+
+TBD
