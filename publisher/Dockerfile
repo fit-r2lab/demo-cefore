@@ -17,9 +17,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /root
 
-RUN svn export https://github.com/fit-r2lab/r2lab-demos/trunk/cefore
+RUN git clone https://github.com/fit-r2lab/demo-cefore.git
 
-WORKDIR /root/cefore
+WORKDIR /root/demo-cefore
 
 RUN true \
   && cp bin/cefnetd /usr/local/sbin \
