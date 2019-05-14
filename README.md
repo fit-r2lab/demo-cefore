@@ -112,4 +112,4 @@ Note that the log file will be at /root/NS3/source/ns-3-dce/files-4/var/log/5688
 We provide a program to compute the QoE metric on the directory QoE. To compute it, just run:
 
 * g++ cal-buffer-qoe.cc
-* ./a.out [thuputLog-file (cefore) or stdout-file (iperf)] [cefore or tcp] [initial buffer level (sec), default 1]
+* ./a.out [thuputLog-file (cefore) or stdout-file (iperf)] [cefore or tcp] [initial buffer level (sec) (default 1s)]
