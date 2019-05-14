@@ -366,8 +366,22 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
             if tcp_streaming:
                 # TCP streaming scenario
                 if load_nodes:
+                    #ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
+                    ue_commands += f"ip route add {publisher_ip}/32 dev oip1;"
+                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data;"
+                    ue_commands += "iptables -t nat -A POSTROUTING -s 10.1.1.2/32  -j SNAT --to-source 172.16.0.2;"
+                    ue_commands += "iptables -t nat -A PREROUTING -d 172.16.0.2   -j DNAT --to-destination 10.1.1.2;"
+                    ue_commands += "iptables -A FORWARD -d 10.1.1.2/32 -i oip1 -j ACCEPT;"
+                    ue_commands += f"iptables -A FORWARD -d {publisher_ip}/32 -i data -j ACCEPT;"
+                    ue_commands += "ip rule del from all to 172.16.0.2 lookup 201;"
+                    ue_commands += "ip rule del from 172.16.0.2 lookup 201;"
+                    ue_commands += "ip rule add from 10.1.1.2 lookup lte prio 32760;"
+                    ue_commands += "ip rule add from all to 172.16.0.2 lookup lte prio 32761;"
+                    ue_commands += "ip rule add from all fwmark 0x1 lookup lte prio 32762;"
+                    ue_commands += "ip route add table lte 10.1.1.0/24 via 192.168.2.32 dev data;"
                     ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
-                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data"
+#                    ue_commands += "killall cefnetd || true"
+ 
                 job_setup_ue = [
                     SshJob(
                         node=ue_node,
@@ -383,18 +397,20 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                 # Cefore streaming scenario
                 if load_nodes:
                     ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
-                    ue_commands += f"ip route add {publisher_ip}/32 dev oip1;"
-                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data;"
-                    ue_commands += "iptables -t nat -A POSTROUTING -s 10.1.1.2/32  -j SNAT --to-source 172.16.0.2;"
-                    ue_commands += "iptables -t nat -A PREROUTING -d 172.16.0.2   -j DNAT --to-destination 10.1.1.2;"
-                    ue_commands += "iptables -A FORWARD -d 10.1.1.2/32 -i oip1 -j ACCEPT;"
-                    ue_commands += f"iptables -A FORWARD -d {publisher_ip}/32 -i data -j ACCEPT;"
-                    ue_commands += "ip rule del from all to 172.16.0.2 lookup 201;"
-                    ue_commands += "ip rule del from 172.16.0.2 lookup 201;"
-                    ue_commands += "ip rule add from 10.1.1.2 lookup lte prio 32760;"
-                    ue_commands += "ip rule add from all to 172.16.0.2 lookup lte prio 32761;"
-                    ue_commands += "ip rule add from all fwmark 0x1 lookup lte prio 32762;"
-                    ue_commands += "ip route add table lte 10.1.1.0/24 via 192.168.2.32 dev data;"
+                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data"
+#                    ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
+#                    ue_commands += "ip route add {publisher_ip}/32 dev oip1;"
+#                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data;"
+#                    ue_commands += "iptables -t nat -A POSTROUTING -s 10.1.1.2/32  -j SNAT --to-source 172.16.0.2;"
+#                    ue_commands += "iptables -t nat -A PREROUTING -d 172.16.0.2   -j DNAT --to-destination 10.1.1.2;"
+#                    ue_commands += "iptables -A FORWARD -d 10.1.1.2/32 -i oip1 -j ACCEPT;"
+#                    ue_commands += f"iptables -A FORWARD -d {publisher_ip}/32 -i data -j ACCEPT;"
+#                    ue_commands += "ip rule del from all to 172.16.0.2 lookup 201;"
+#                    ue_commands += "ip rule del from 172.16.0.2 lookup 201;"
+#                    ue_commands += "ip rule add from 10.1.1.2 lookup lte prio 32760;"
+#                    ue_commands += "ip rule add from all to 172.16.0.2 lookup lte prio 32761;"
+#                    ue_commands += "ip rule add from all fwmark 0x1 lookup lte prio 32762;"
+#                    ue_commands += "ip route add table lte 10.1.1.0/24 via 192.168.2.32 dev data;"
 #                    ue_commands += "killall cefnetd || true"
                 job_setup_ue = [
                     SshJob(
@@ -420,7 +436,8 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                         node=ns3_node,
                         commands=[
                             Run("turn-on-data"),
-                            Run("ifconfig data promisc up"),
+                            Run("ifconfig data promisc up"), 
+                            Run("ip route del default via 192.168.3.100 dev control"), 
                             Run("ip route add default via 192.168.2.6 dev data || true"),
                             Run("sysctl -w net.ipv4.ip_forward=1"),
                             ],
@@ -441,7 +458,7 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                     SshJob(
                         node=cnnode,
                         commands=[
-                            Run(f"echo 'ccn:/streaming tcp {publisher_ip}:80' > /usr/local/cefore/cefnetd.conf"),
+                            Run(f"echo 'ccn:/streaming tcp {publisher_ip}:80' > /usr/local/cefore/cefnetd.fib"),
 #                            Run("killall cefnetd || true"),# not done by default with service.start_command()
                             cefnet_ns3_service.start_command(),
                             ],
