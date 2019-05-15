@@ -29,9 +29,7 @@ RUN true \
   && mkdir -p /usr/local/cefore \
   && cp Cefore-Config/* /usr/local/cefore \
   && echo "CS_MODE=1" > /usr/local/cefore/cefnetd.conf \
-  && echo "PORT_NUM=80" >> /usr/local/cefore/cefnetd.conf \
-  && echo "ccn:/streaming udp 172.16.0.1" > /usr/local/cefore/cefnetd.fib 
-
+  && echo "PORT_NUM=80" >> /usr/local/cefore/cefnetd.conf 
 
 EXPOSE 80
 
