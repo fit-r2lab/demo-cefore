@@ -28,10 +28,12 @@ Note that consumer adaptation mechanisms used to dynamically select the appropri
 
 **Prerequisites**: 
 
-You should have an account and a reserved slice on R2lab and have installed a few software on your machine. 
+You should have an account and a reserved slice on R2lab and have installed a recent version of python3 (>=3.6) and few software on your machine (see the link below). 
 
-* To sign up and reserve a slice, click [here](https://r2lab.inria.fr/tuto-010-registration.md).   
-* To install the few companion software, click [here](https://r2lab.inria.fr/tuto-030-nepi-ng-install.md). 
+* To sign up and reserve a slice on R2lab, click [here](https://r2lab.inria.fr/tuto-010-registration.md).   
+* To install the useful companion software, click [here](https://r2lab.inria.fr/tuto-030-nepi-ng-install.md). 
+
+From now, we assume that you booked the slice called "inria_myslice".
 
 You need to run the publisher on some host of your choice. We provide a Dockerfile (within the publisher directory) that is ready to use for the demo with Cefore and iperf binaries installed. To build the corresponding docker image, run on an empty directory of the publisher host the following command:
 
@@ -49,17 +51,25 @@ At first, run cefnetd on your publisher container:
 
 * killall cefnetd; cefnetdstart
 
-Run on your machine:
+Run on your machine (in the demo-cefore directory):
 
-*  python3 ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
+* ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
 
 Then, wait for a few minutes, and when the script invites you to do so:
 
-Run on the ns-3 R2lab node (fit32 by default):
+Log to the R2lab faraday gateway:
+
+* ssh inria_myslice@faraday.inria.fr
+
+From faraday, log to the ns-3 R2lab node (fit32):
+
+* ssh root@fit32
+
+Then on this fit32 node, run:
 
 * /root/NS3/source/ns-3-dce/waf  --run dce-cefore-test
 
-Note that the log file will be at /root/NS3/source/ns-3-dce/files-3/tmp/cefgetstream-thuputLog-1262304001100000
+Note that the log file used to plot figures will be created at /root/NS3/source/ns-3-dce/files-3/tmp/cefgetstream-thuputLog-1262304001100000
 
 Then, run on the publisher container:
 
@@ -74,13 +84,21 @@ We assume that your publisher host has the following public IP address: a.b.c.d
 At first, run cefnetd on your publisher container:
 * killall cefnetd; cefnetdstart
 
-Run on your machine:
+Run on your machine (in the demo-cefore directory):
 
-*  python3 ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
+* ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
 
 Then, wait for a few minutes, and when the script invites you to do so:
 
-Run on the ns-3 R2lab node (fit32 by default):
+Log to the R2lab faraday gateway:
+
+* ssh inria_myslice@faraday.inria.fr
+
+From faraday, log to the ns-3 R2lab node (fit32):
+
+* ssh root@fit32
+
+Then on this fit32 node, run:
 
 * /root/NS3/source/ns-3-dce/waf  --run "dce-cefore-test --onlyRGI=1"
 
@@ -95,13 +113,21 @@ Then, run on the publisher container:
 At first, run iperf on your publisher container:
 * iperf -s -P 1 -p 80
 
-Run on your machine:
+Run on your machine (in the demo-cefore directory):
 
-* python3 ./mosaic-cefore.py -t -P a.b.c.d -s your_slice -l
+* ./mosaic-cefore.py -t -P a.b.c.d -s your_slice -l
  
 Then, wait for a few minutes, and when the script invites you to do so:
 
-Run on the ns-3 R2lab node (fit32 by default):
+Log to the R2lab faraday gateway:
+
+* ssh inria_myslice@faraday.inria.fr
+
+From faraday, log to the ns-3 R2lab node (fit32):
+
+* ssh root@fit32
+
+Then on this fit32 node, run:
 
 * /root/NS3/source/ns-3-dce/waf  --run dce-tcp-test
 

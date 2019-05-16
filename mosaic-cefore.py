@@ -366,7 +366,7 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
             if tcp_streaming:
                 # TCP streaming scenario
                 if load_nodes:
-                    #ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
+                    ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
                     ue_commands += f"ip route add {publisher_ip}/32 dev oip1;"
                     ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data;"
                     ue_commands += "iptables -t nat -A POSTROUTING -s 10.1.1.2/32  -j SNAT --to-source 172.16.0.2;"
@@ -380,7 +380,8 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                     ue_commands += "ip rule add from all fwmark 0x1 lookup lte prio 32762;"
                     ue_commands += "ip route add table lte 10.1.1.0/24 via 192.168.2.32 dev data;"
                     ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
-#                    ue_commands += "killall cefnetd || true"
+                else:
+                    ue_commands += "killall cefnetd || true"
  
                 job_setup_ue = [
                     SshJob(
@@ -397,21 +398,9 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                 # Cefore streaming scenario
                 if load_nodes:
                     ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
-                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data"
-#                    ue_commands += "sysctl -w net.ipv4.ip_forward=1;"
-#                    ue_commands += "ip route add {publisher_ip}/32 dev oip1;"
-#                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data;"
-#                    ue_commands += "iptables -t nat -A POSTROUTING -s 10.1.1.2/32  -j SNAT --to-source 172.16.0.2;"
-#                    ue_commands += "iptables -t nat -A PREROUTING -d 172.16.0.2   -j DNAT --to-destination 10.1.1.2;"
-#                    ue_commands += "iptables -A FORWARD -d 10.1.1.2/32 -i oip1 -j ACCEPT;"
-#                    ue_commands += f"iptables -A FORWARD -d {publisher_ip}/32 -i data -j ACCEPT;"
-#                    ue_commands += "ip rule del from all to 172.16.0.2 lookup 201;"
-#                    ue_commands += "ip rule del from 172.16.0.2 lookup 201;"
-#                    ue_commands += "ip rule add from 10.1.1.2 lookup lte prio 32760;"
-#                    ue_commands += "ip rule add from all to 172.16.0.2 lookup lte prio 32761;"
-#                    ue_commands += "ip rule add from all fwmark 0x1 lookup lte prio 32762;"
-#                    ue_commands += "ip route add table lte 10.1.1.0/24 via 192.168.2.32 dev data;"
-#                    ue_commands += "killall cefnetd || true"
+                    ue_commands += "ip route add 10.1.1.0/24 via 192.168.2.32 dev data;"
+                else:
+                    ue_commands += "killall cefnetd || true"
                 job_setup_ue = [
                     SshJob(
                         node=ue_node,
@@ -420,7 +409,7 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                             cefnet_ue_service.start_command(),
                             ],
                         label=f"ping faraday gateway from fit{ue:02d} UE and set up routing for the Cefore streaming scenario",
-                         critical=True,#old cefnetd not killed when running new one...
+                         critical=True,
                         required=job_start_ues,
                         scheduler=scheduler)
                     ]
@@ -442,7 +431,6 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                             Run("sysctl -w net.ipv4.ip_forward=1"),
                             ],
                         label=f"setup routing on ns-3 fit{ns3:02d} node",
-                        # ip route may already be there so the ip route command may fail
                         critical=True,
                         required=job_setup_ue,
                         scheduler=scheduler)
@@ -459,11 +447,11 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
                         node=cnnode,
                         commands=[
                             Run(f"echo 'ccn:/streaming tcp {publisher_ip}:80' > /usr/local/cefore/cefnetd.fib"),
-#                            Run("killall cefnetd || true"),# not done by default with service.start_command()
+                            Run("killall cefnetd || true"),
                             cefnet_ns3_service.start_command(),
                             ],
                         label=f"Start Cefnet on EPC running at fit{cn:02d}",
-                        critical=True,#old cefnetd not killed when running new one...
+                        critical=True,
                         required=ns3_requirements,
                         scheduler=scheduler,
                         )
