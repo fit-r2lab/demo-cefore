@@ -9,6 +9,7 @@ FROM ubuntu:16.04
 
 USER root
 RUN apt-get update && apt-get install -y \
+   psmisc \
    git \
    wget \
    subversion \
@@ -25,6 +26,7 @@ RUN true \
   && cp bin/cefnetd /usr/local/sbin \
   && cp bin/cefctrl /usr/local/sbin \
   && cp bin/cefstatus /usr/local/bin \
+  && cp bin/cefputfile /usr/local/bin \
   && cp bin/cefnetdstart /usr/local/bin \
   && mkdir -p /usr/local/cefore \
   && cp Cefore-Config/* /usr/local/cefore \

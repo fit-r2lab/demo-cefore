@@ -46,11 +46,12 @@ Then to create the publisher container, run:
 We assume that your publisher host has the following public IP address: a.b.c.d
 
 At first, run cefnetd on your publisher container:
-* cefnetdstart
+
+* killall cefnetd; cefnetdstart
 
 Run on your machine:
 
-*  ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
+*  python3 ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
 
 Then, wait for a few minutes, and when the script invites you to do so:
 
@@ -71,11 +72,11 @@ Then, run on the publisher container:
 We assume that your publisher host has the following public IP address: a.b.c.d
 
 At first, run cefnetd on your publisher container:
-* cefnetdstart
+* killall cefnetd; cefnetdstart
 
 Run on your machine:
 
-*  ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
+*  python3 ./mosaic-cefore.py -P a.b.c.d -s your_slice -l
 
 Then, wait for a few minutes, and when the script invites you to do so:
 
@@ -96,7 +97,7 @@ At first, run iperf on your publisher container:
 
 Run on your machine:
 
-* ./mosaic-cefore.py -t -P a.b.c.d -s your_slice -l
+* python3 ./mosaic-cefore.py -t -P a.b.c.d -s your_slice -l
  
 Then, wait for a few minutes, and when the script invites you to do so:
 

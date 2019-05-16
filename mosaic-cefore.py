@@ -562,7 +562,7 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
         print(f"root@fit{ns3:02d}:~# /root/NS3/source/ns-3-dce/waf  --run dce-tcp-test")
         print("Then, run iperf on the publisher host:")
         print("yourlogin@publisher:~# iperf -s -P 1 -p 80")
-        print(f"Log file will be available on fit{ns3:02d} at:")
+        print(f"The log file used to plot figures will be available on fit{ns3:02d} at:")
         print("  /root/NS3/source/ns-3-dce/files-4/var/log/56884/stdout")
     else:
         # Cefore streaming scenario
@@ -570,11 +570,11 @@ def run(*,                                # pylint: disable=r0912, r0914, r0915
         print("login@your_host:r2lab-demos/cefore# scp bin/cefnetd yourlogin@publisher_node:/usr/local/sbin")
         print("login@your_host:r2lab-demos/cefore# scp bin/cefputfile yourlogin@publisher_node:/user/local/bin")
         print(f"After that, run on the ns-3 fit{ns3:02d} node the following command:")
-        print(f"root@fit{ns3:02d}:~# /root/NS3/source/ns-3-dce/waf  --run dce-cefore-test ")
+        print(f"root@fit{ns3:02d}:~# /root/NS3/source/ns-3-dce/waf  --run dce-cefore-test [--onlyRGI=1]")
         print("Then, run on the publisher host:")
-        print("yourlogin@publisher:~# cefnetd")
+        print("yourlogin@publisher:~# killall cefnetd; cefnetdstart")
         print("yourlogin@publisher:~# cefputfile ccn:/streaming/test -f ./[file-name] -r [1 <= streaming_rate <= 32 (Mbps)]")
-        print(f"Log file will be available on fit{ns3:02d} at:")
+        print(f"The log file used to plot figures will be available on fit{ns3:02d} at:")
         print("  /root/NS3/source/ns-3-dce/files-3/tmp/cefgetstream-thuputLog-126230400110000")
     print(80*'*')
 
