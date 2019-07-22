@@ -12,7 +12,7 @@ Kazuhisa Matsuzono, Hitoshi Asaeda, Indukala Naladala and Thierry Turletti
 
 #### venue:
 
-submitted at Globecom'19 conference 
+in submission
 
 
 
